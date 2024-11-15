@@ -11,7 +11,10 @@ namespace Wiki.DataAccess.Data
     public class ApplicationDbContext : DbContext
     {
         public DbSet<Book> Books { get; set; }
-        public DbSet<Genre> Genres { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Author> Authors { get; set; }
+        public DbSet<Publisher> Publishers { get; set; }
+        public DbSet<SubCategory> SubCategories { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -38,19 +41,25 @@ namespace Wiki.DataAccess.Data
                 Price = 10.99M
             }
             );
-            var GenreList = new List<Genre>()
+            var GenreList = new List<Category>()
             {
-                new Genre() {
+                new Category() {
                     DisplayOrder = 1,
-                    GenreId = 1,
-                    GenreName = "Action"
+                    CategoryId = 1,
+                    CategoryName = "Action"
             },
-                new Genre() {
+                new Category() {
                     DisplayOrder = 2,
-                    GenreId = 2,
-                    GenreName = "Drama" }
+                    CategoryId = 2,
+                    CategoryName = "Drama"
+                },
+                new Category() {
+                    DisplayOrder = 3,
+                    CategoryId = 3,
+                    CategoryName = "Comedy"
+            }
             };
-                modelBuilder.Entity<Genre>().HasData(GenreList);
+            modelBuilder.Entity<Category>().HasData(GenreList);
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
