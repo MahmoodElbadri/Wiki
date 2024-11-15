@@ -15,30 +15,63 @@ namespace Wiki.DataAccess.Data
         public DbSet<Author> Authors { get; set; }
         public DbSet<Publisher> Publishers { get; set; }
         public DbSet<SubCategory> SubCategories { get; set; }
+        public DbSet<BookDetail> BookDetails { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Book>().Property(tmp => tmp.Price).HasPrecision(10, 5);
+            var publisherList = new List<Publisher>()
+            {
+                new Publisher()
+                {
+                    Name = "AlAhram",
+                    Location =  "Egypt",
+                    Publisher_Id = 1
+                },
+                new Publisher()
+                {
+                    Name = "Penguin",
+                    Location =  "USA",
+                    Publisher_Id = 2
+                },
+                new Publisher()
+                {
+                    Name = "HarperCollins",
+                    Location =  "USA",
+                    Publisher_Id = 3
+                },
+                new Publisher()
+                {
+                    Name = "Hachette",
+                    Location =  "France",
+                    Publisher_Id = 4
+                }
+            };
+            modelBuilder.Entity<Publisher>().HasData(publisherList);
             modelBuilder.Entity<Book>().HasData(new Book()
             {
-                Id = 1,
+                Book_Id = 1,
                 Title = "Book 1",
                 ISBN = "123456789",
-                Price = 10.99M
+                Price = 10.99M,
+                Publisher_Id = 1
             },
             new Book()
             {
-                Id = 2,
+                Book_Id = 2,
                 Title = "Book 2",
                 ISBN = "123456789",
-                Price = 10.99M
+                Price = 10.99M,
+                Publisher_Id = 2
             },
             new Book()
             {
-                Id = 3,
+                Book_Id = 3,
                 Title = "Book 3",
                 ISBN = "123456789",
-                Price = 10.99M
+                Price = 10.99M,
+                Publisher_Id = 3
             }
             );
             var GenreList = new List<Category>()
@@ -59,7 +92,9 @@ namespace Wiki.DataAccess.Data
                     CategoryName = "Comedy"
             }
             };
+            
             modelBuilder.Entity<Category>().HasData(GenreList);
+            modelBuilder.Entity<BookAuthorMap>().HasKey(tmp=> new {tmp.Author_Id, tmp.Book_Id});
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

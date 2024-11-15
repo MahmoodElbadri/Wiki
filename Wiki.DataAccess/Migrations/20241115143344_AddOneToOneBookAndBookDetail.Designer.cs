@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wiki.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using Wiki.DataAccess.Data;
 namespace Wiki.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241115143344_AddOneToOneBookAndBookDetail")]
+    partial class AddOneToOneBookAndBookDetail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,32 +43,6 @@ namespace Wiki.DataAccess.Migrations
                     b.HasKey("Publisher_Id");
 
                     b.ToTable("Publishers");
-
-                    b.HasData(
-                        new
-                        {
-                            Publisher_Id = 1,
-                            Location = "Egypt",
-                            Name = "AlAhram"
-                        },
-                        new
-                        {
-                            Publisher_Id = 2,
-                            Location = "USA",
-                            Name = "Penguin"
-                        },
-                        new
-                        {
-                            Publisher_Id = 3,
-                            Location = "USA",
-                            Name = "HarperCollins"
-                        },
-                        new
-                        {
-                            Publisher_Id = 4,
-                            Location = "France",
-                            Name = "Hachette"
-                        });
                 });
 
             modelBuilder.Entity("Wiki.Model.Models.Author", b =>
@@ -113,15 +90,10 @@ namespace Wiki.DataAccess.Migrations
                         .HasPrecision(10, 5)
                         .HasColumnType("decimal(10,5)");
 
-                    b.Property<int>("Publisher_Id")
-                        .HasColumnType("int");
-
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Book_Id");
-
-                    b.HasIndex("Publisher_Id");
 
                     b.ToTable("Books");
 
@@ -131,7 +103,6 @@ namespace Wiki.DataAccess.Migrations
                             Book_Id = 1,
                             ISBN = "123456789",
                             Price = 10.99m,
-                            Publisher_Id = 1,
                             Title = "Book 1"
                         },
                         new
@@ -139,7 +110,6 @@ namespace Wiki.DataAccess.Migrations
                             Book_Id = 2,
                             ISBN = "123456789",
                             Price = 10.99m,
-                            Publisher_Id = 2,
                             Title = "Book 2"
                         },
                         new
@@ -147,24 +117,8 @@ namespace Wiki.DataAccess.Migrations
                             Book_Id = 3,
                             ISBN = "123456789",
                             Price = 10.99m,
-                            Publisher_Id = 3,
                             Title = "Book 3"
                         });
-                });
-
-            modelBuilder.Entity("Wiki.Model.Models.BookAuthorMap", b =>
-                {
-                    b.Property<int>("Author_Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Book_Id")
-                        .HasColumnType("int");
-
-                    b.HasKey("Author_Id", "Book_Id");
-
-                    b.HasIndex("Book_Id");
-
-                    b.ToTable("BookAuthorMap");
                 });
 
             modelBuilder.Entity("Wiki.Model.Models.BookDetail", b =>
@@ -253,36 +207,6 @@ namespace Wiki.DataAccess.Migrations
                     b.ToTable("SubCategories");
                 });
 
-            modelBuilder.Entity("Wiki.Model.Models.Book", b =>
-                {
-                    b.HasOne("Wiki.DataAccess.Data.Publisher", "Publisher")
-                        .WithMany("Books")
-                        .HasForeignKey("Publisher_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Publisher");
-                });
-
-            modelBuilder.Entity("Wiki.Model.Models.BookAuthorMap", b =>
-                {
-                    b.HasOne("Wiki.Model.Models.Author", "Author")
-                        .WithMany("BookAuthorMap")
-                        .HasForeignKey("Author_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Wiki.Model.Models.Book", "Book")
-                        .WithMany("BookAuthorMap")
-                        .HasForeignKey("Book_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Author");
-
-                    b.Navigation("Book");
-                });
-
             modelBuilder.Entity("Wiki.Model.Models.BookDetail", b =>
                 {
                     b.HasOne("Wiki.Model.Models.Book", "Book")
@@ -294,20 +218,8 @@ namespace Wiki.DataAccess.Migrations
                     b.Navigation("Book");
                 });
 
-            modelBuilder.Entity("Wiki.DataAccess.Data.Publisher", b =>
-                {
-                    b.Navigation("Books");
-                });
-
-            modelBuilder.Entity("Wiki.Model.Models.Author", b =>
-                {
-                    b.Navigation("BookAuthorMap");
-                });
-
             modelBuilder.Entity("Wiki.Model.Models.Book", b =>
                 {
-                    b.Navigation("BookAuthorMap");
-
                     b.Navigation("BookDetail");
                 });
 #pragma warning restore 612, 618
