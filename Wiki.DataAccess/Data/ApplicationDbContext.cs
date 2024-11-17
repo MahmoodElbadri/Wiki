@@ -16,10 +16,17 @@ namespace Wiki.DataAccess.Data
         public DbSet<Publisher> Publishers { get; set; }
         public DbSet<SubCategory> SubCategories { get; set; }
         public DbSet<BookDetail> BookDetails { get; set; }
+        //fluent 
+        public DbSet<FluentBookDetail> BookDetailsFluent { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<FluentBookDetail>().ToTable("Fluent_BookDetail");
+            modelBuilder.Entity<FluentBookDetail>().Property(tmp=>tmp.NumberOfChapters).HasColumnName("NoOfChapters");
+
+
             modelBuilder.Entity<Book>().Property(tmp => tmp.Price).HasPrecision(10, 5);
             var publisherList = new List<Publisher>()
             {
