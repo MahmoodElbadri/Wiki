@@ -5,7 +5,7 @@
 namespace Wiki.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class Add_fluentBookDetails : Migration
+    public partial class AddFluentBookDetailToDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -12,8 +12,8 @@ using Wiki.DataAccess.Data;
 namespace Wiki.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241117193225_Add_fluentBookDetails")]
-    partial class Add_fluentBookDetails
+    [Migration("20241119183835_AddFluentAuthorAndPublisherToDb")]
+    partial class AddFluentAuthorAndPublisherToDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,26 @@ namespace Wiki.DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Wiki.DataAccess.Data.FluentPublisher", b =>
+                {
+                    b.Property<int>("Publisher_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Publisher_Id"));
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Publisher_Id");
+
+                    b.ToTable("Fluent_Publisher", (string)null);
+                });
 
             modelBuilder.Entity("Wiki.DataAccess.Data.Publisher", b =>
                 {
@@ -238,6 +258,63 @@ namespace Wiki.DataAccess.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Wiki.Model.Models.FluentAuthor", b =>
+                {
+                    b.Property<int>("Author_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Author_Id"));
+
+                    b.Property<DateTime?>("BirthDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Author_Id");
+
+                    b.ToTable("Fluent_Author", (string)null);
+                });
+
+            modelBuilder.Entity("Wiki.Model.Models.FluentBook", b =>
+                {
+                    b.Property<int>("Book_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Book_Id"));
+
+                    b.Property<int?>("FluentBookDetailBookDetail_Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ISBN")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Book_Id");
+
+                    b.HasIndex("FluentBookDetailBookDetail_Id");
+
+                    b.ToTable("Fluent_Book", (string)null);
+                });
+
             modelBuilder.Entity("Wiki.Model.Models.FluentBookDetail", b =>
                 {
                     b.Property<int>("BookDetail_Id")
@@ -318,6 +395,15 @@ namespace Wiki.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("Wiki.Model.Models.FluentBook", b =>
+                {
+                    b.HasOne("Wiki.Model.Models.FluentBookDetail", "FluentBookDetail")
+                        .WithMany()
+                        .HasForeignKey("FluentBookDetailBookDetail_Id");
+
+                    b.Navigation("FluentBookDetail");
                 });
 
             modelBuilder.Entity("Wiki.DataAccess.Data.Publisher", b =>
