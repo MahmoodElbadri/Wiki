@@ -20,5 +20,6 @@ public class FluentAuthor
     public string? Location { get; set; }
     [NotMapped]
     public string? FullName => $"{FirstName} {LastName}";
-    //public List<FluentBookAuthorMap>? BookAuthorMap { get; set; }
+    //public List<FluentBook>? FluentBooks { get; set; }
+     public List<FluentBookAuthorMap>? BookAuthorMap { get; set; }
 }

@@ -15,9 +15,10 @@ public class FluentBook
     public string? ISBN { get; set; }
     public decimal Price { get; set; }
     public string? PriceRange { get; set; }
-    public FluentBookDetail? FluentBookDetail{ get; set; }
+    public FluentBookDetail? FluentBookDetail { get; set; }
     //[ForeignKey(nameof(Publisher))]
-    //public int Publisher_Id { get; set; }
-    //public FluentPublisher? Publisher { get; set; }
-    //public List<FluentBookAuthorMap>? BookAuthorMap { get; set; }
+    public int Publisher_Id { get; set; }
+    public FluentPublisher? Publisher { get; set; }
+    //public List<FluentAuthor>? FluentAuthors { get; set; } = new List<FluentAuthor>(); // <FluentAuthor>
+    public List<FluentBookAuthorMap>? BookAuthorMap { get; set; }
 }

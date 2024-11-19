@@ -10,5 +10,5 @@ public class FluentPublisher
     public string? Name { get; set; }
 
     public string? Location { get; set; }
-    //public List<FluentBook>? Books { get; set; }
+    public List<FluentBook>? Books { get; set; }
 }

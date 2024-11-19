@@ -14,7 +14,7 @@ public class FluentBookDetail
     public int NumberOfPages { get; set; }
     public string? Weight { get; set; }
     //[ForeignKey(nameof(Book))]
-    //public int Book_Id { get; set; }
-    //public FluentBook? Book { get; set; }
+    public int Book_Id { get; set; }
+    public FluentBook? Book { get; set; }
 
 }

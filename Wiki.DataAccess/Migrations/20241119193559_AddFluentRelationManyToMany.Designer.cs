@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wiki.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using Wiki.DataAccess.Data;
 namespace Wiki.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241119193559_AddFluentRelationManyToMany")]
+    partial class AddFluentRelationManyToMany
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -295,7 +298,7 @@ namespace Wiki.DataAccess.Migrations
 
                     b.HasKey("Author_Id");
 
-                    b.ToTable("FluentAuthors");
+                    b.ToTable("Fluent_Author", (string)null);
                 });
 
             modelBuilder.Entity("Wiki.Model.Models.FluentBook", b =>

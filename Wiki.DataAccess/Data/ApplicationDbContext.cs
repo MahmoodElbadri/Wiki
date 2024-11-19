@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Wiki.DataAccess.FluentConfig;
 using Wiki.Model.Models;
 
 namespace Wiki.DataAccess.Data
@@ -25,55 +27,6 @@ namespace Wiki.DataAccess.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<FluentBookDetail>()
-                .ToTable("Fluent_BookDetail");
-            modelBuilder.Entity<FluentBookDetail>()
-                .Property(tmp => tmp.NumberOfChapters)
-                .HasColumnName("NoOfChapters");
-            modelBuilder.Entity<FluentBookDetail>()
-                .Property(tmp => tmp.NumberOfChapters)
-                .IsRequired();
-            modelBuilder.Entity<FluentBookDetail>()
-                .HasKey(tmp => tmp.BookDetail_Id);
-
-
-            modelBuilder.Entity<FluentBook>()
-                .ToTable("Fluent_Book");
-            modelBuilder.Entity<FluentBook>()
-                .Property(tmp => tmp.ISBN)
-                .HasMaxLength(50);
-            modelBuilder.Entity<FluentBook>()
-                .Property(tmp => tmp.ISBN)
-                .IsRequired();
-            modelBuilder.Entity<FluentBook>()
-                .HasKey(tmp => tmp.Book_Id);
-            modelBuilder.Entity<FluentBook>()
-                .Ignore(tmp => tmp.PriceRange);
-
-
-            modelBuilder.Entity<FluentPublisher>()
-                            .ToTable("Fluent_Publisher");
-            modelBuilder.Entity<FluentPublisher>()
-                .HasKey(tmp => tmp.Publisher_Id);
-            modelBuilder.Entity<FluentPublisher>()
-                .Property(tmp => tmp.Name)
-                .IsRequired();
-
-
-            modelBuilder.Entity<FluentAuthor>()
-                .ToTable("Fluent_Author");
-            modelBuilder.Entity<FluentAuthor>()
-                .HasKey(tmp => tmp.Author_Id);
-            modelBuilder.Entity<FluentAuthor>()
-                .Property(tmp=>tmp.FirstName)
-                .IsRequired();
-            modelBuilder.Entity<FluentAuthor>()
-                .Property (tmp=>tmp.LastName)
-                .IsRequired();
-            modelBuilder.Entity<FluentAuthor>()
-                .Ignore(tmp => tmp.FullName);
-
 
             modelBuilder.Entity<Book>().Property(tmp => tmp.Price).HasPrecision(10, 5);
             var publisherList = new List<Publisher>()
@@ -149,12 +102,19 @@ namespace Wiki.DataAccess.Data
             };
 
             modelBuilder.Entity<Category>().HasData(GenreList);
-            modelBuilder.Entity<BookAuthorMap>().HasKey(tmp => new { tmp.Author_Id, tmp.Book_Id });
+
+            modelBuilder.ApplyConfiguration(new FluentBookDetailConfig());
+            modelBuilder.ApplyConfiguration(new FluentAuthorConfig());
+            modelBuilder.ApplyConfiguration(new FluentBookConfig());
+            modelBuilder.ApplyConfiguration(new FluentPublisherConfig());
+            modelBuilder.ApplyConfiguration(new FluentBookAuthorConfig());
+            
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=CodingWiki;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
+            optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=CodingWiki;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False")
+                .LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Name }, LogLevel.Information);
         }
     }
 }
