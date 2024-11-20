@@ -17,31 +17,84 @@ public class Program
                 db.Database.Migrate();
             }
         }*/
-        AddBook();
-        GetBooks();
+        //AddBook();
+        //GetBook();
+        //GetBookUsingWhereClause();
+        //GetBookUsingFindClause();
+        //UpdateBook();
+        //DeleteBook();
+        //GetBooks();
     }
-    public static void GetBooks()
+
+    /*private static async void DeleteBook()
     {
         using var db = new ApplicationDbContext();
+        Book? book = await db.Books.Where(tmp => tmp.Title == "Guliver's Travels").FirstOrDefaultAsync();
+        db.Books.Remove(book!);
+        await db.SaveChangesAsync();
+    }
 
-        var books = db.Books.ToList();
-        foreach (var book in books)
+    private static async void UpdateBook()
+    {
+        using var db = new ApplicationDbContext();
+        Book? book = await db.Books.Where(tmp => tmp.Title == "Guliver's Travels").FirstOrDefaultAsync();
+        book!.Title = "Journey to the Center of the Earth";
+        db.SaveChangesAsync();
+    }
+
+    private static async void GetBookUsingFindClause()
+    {
+        using var db = new ApplicationDbContext();
+        Book? book = await db.Books.FindAsync(8);
+        System.Console.WriteLine(book!.Title + " " + book.ISBN);
+    }
+
+    private static async void GetBookUsingWhereClause()
+    {
+        using var db = new ApplicationDbContext();
+        var book = await db.Books.Where(tmp => tmp.Publisher_Id == 2).OrderBy(tmp => tmp.Title).ThenBy(tmp => tmp.Publisher_Id).ToListAsync();
+        foreach (var item in book)
         {
-          System. Console.WriteLine(book.Title + " " + book.ISBN);
+            System.Console.WriteLine(item!.Title + " " + item.ISBN);
         }
     }
 
-    public static void AddBook()
+    private static async void GetBook()
+    {
+        using var db = new ApplicationDbContext();
+        try
+        {
+            var book = await db.Books.FirstAsync();
+            System.Console.WriteLine(book);
+        }
+        catch (Exception e)
+        {
+            System.Console.WriteLine(e.Message);
+        }
+    }
+
+    public static async void GetBooks()
+    {
+        using var db = new ApplicationDbContext();
+
+        var books =await db.Books.ToListAsync();
+        foreach (var book in books)
+        {
+            System.Console.WriteLine(book.Title + " " + book.ISBN);
+        }
+    }
+
+    public static async void AddBook()
     {
         using var db = new ApplicationDbContext();
         Book book = new Book()
         {
             ISBN = "6789",
-            Title = "Guliver's Travels",
+            Title = "Gulliver's Travels",
             Price = 100,
             Publisher_Id = 2
         };
         db.Books.Add(book);
-        db.SaveChanges();
-    }
+       await db.SaveChangesAsync();
+    }*/
 }

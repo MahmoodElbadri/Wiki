@@ -12,5 +12,4 @@ public class Category
     public int CategoryId { get; set; }
     [Column("Name")]
     public string? CategoryName { get; set; }
-    public int DisplayOrder { get; set; }
 }

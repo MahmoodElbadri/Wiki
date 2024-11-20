@@ -24,6 +24,10 @@ namespace Wiki.DataAccess.Data
         public DbSet<FluentPublisher> FluentPublishers { get; set; }
         public DbSet<FluentAuthor> FluentAuthors { get; set; }
 
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        {
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -85,17 +89,14 @@ namespace Wiki.DataAccess.Data
             var GenreList = new List<Category>()
             {
                 new Category() {
-                    DisplayOrder = 1,
                     CategoryId = 1,
                     CategoryName = "Action"
             },
                 new Category() {
-                    DisplayOrder = 2,
                     CategoryId = 2,
                     CategoryName = "Drama"
                 },
                 new Category() {
-                    DisplayOrder = 3,
                     CategoryId = 3,
                     CategoryName = "Comedy"
             }
@@ -112,9 +113,9 @@ namespace Wiki.DataAccess.Data
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=CodingWiki;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False")
-                .LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Name }, LogLevel.Information);
+            //base.OnConfiguring(optionsBuilder);
+            //optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=CodingWiki;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False")
+            //    .LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Name }, LogLevel.Information);
         }
     }
 }
