@@ -4,6 +4,8 @@ using Wiki.DataAccess.Data;
 using Wiki.Model.Models;
 
 namespace Wiki.Web.Controllers;
+
+#nullable disable
 public class AuthorController : Controller
 {
     private readonly ApplicationDbContext _db;
@@ -19,7 +21,7 @@ public class AuthorController : Controller
 
     public async Task<IActionResult> Upsert(int? id)
     {
-        Author? author = new();
+        Author author = new();
         if (id == null || id == 0)
         {
             return View(author);

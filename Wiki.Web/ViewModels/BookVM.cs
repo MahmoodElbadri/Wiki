@@ -9,6 +9,6 @@ using Wiki.Model.Models;
 namespace Wiki.Web.ViewModels;
 public class BookVM
 {
-    public Book? Book { get; set; }
-    public IEnumerable<SelectListItem>? PublisherList { get; set; }
+    public Book Book { get; set; }
+    public IEnumerable<SelectListItem> PublisherList { get; set; }
 }

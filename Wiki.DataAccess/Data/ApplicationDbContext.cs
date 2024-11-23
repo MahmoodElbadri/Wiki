@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Wiki.DataAccess.FluentConfig;
 using Wiki.Model.Models;
 
+#nullable disable
 namespace Wiki.DataAccess.Data
 {
     public class ApplicationDbContext : DbContext
@@ -16,13 +17,14 @@ namespace Wiki.DataAccess.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<Publisher> Publishers { get; set; }
-        public DbSet<SubCategory> SubCategories { get; set; }
-        public DbSet<BookDetail> BookDetails { get; set; }
+        public DbSet<SubCategory>    SubCategories { get; set; }
+        public DbSet<BookDetail>             BookDetails { get; set; }
         //fluent 
         public DbSet<FluentBookDetail> BookDetailsFluent { get; set; }
         public DbSet<FluentBook> FluentBooks { get; set; }
         public DbSet<FluentPublisher> FluentPublishers { get; set; }
         public DbSet<FluentAuthor> FluentAuthors { get; set; }
+        public DbSet<BookAuthorMap> BookAuthorMaps { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -109,7 +111,7 @@ namespace Wiki.DataAccess.Data
             modelBuilder.ApplyConfiguration(new FluentBookConfig());
             modelBuilder.ApplyConfiguration(new FluentPublisherConfig());
             modelBuilder.ApplyConfiguration(new FluentBookAuthorConfig());
-            
+
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

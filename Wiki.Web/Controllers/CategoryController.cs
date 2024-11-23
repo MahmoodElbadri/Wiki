@@ -4,6 +4,8 @@ using Wiki.DataAccess.Data;
 using Wiki.Model.Models;
 
 namespace Wiki.Web.Controllers;
+
+#nullable disable
 public class CategoryController : Controller
 {
     private readonly ApplicationDbContext _db;
@@ -18,7 +20,7 @@ public class CategoryController : Controller
     }
     public async Task<IActionResult> Upsert(int? id)
     {
-        Category? category = new();
+        Category category = new();
         if (id == 0 || id == null)
         {
             return View(category);
@@ -56,7 +58,7 @@ public class CategoryController : Controller
 
     public async Task<IActionResult> Delete(int? id)
     {
-        Category? category = _db.Categories.FirstOrDefault(tmp => tmp.CategoryId == id);
+        Category category = _db.Categories.FirstOrDefault(tmp => tmp.CategoryId == id);
         if (category == null)
         {
             return NotFound();

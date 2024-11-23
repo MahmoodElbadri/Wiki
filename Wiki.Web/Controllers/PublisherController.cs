@@ -4,6 +4,8 @@ using Wiki.DataAccess.Data;
 using Wiki.Model.Models;
 
 namespace Wiki.Web.Controllers;
+
+#nullable disable
 public class PublisherController : Controller
 {
     private readonly ApplicationDbContext _db;
@@ -19,7 +21,7 @@ public class PublisherController : Controller
 
     public async Task<IActionResult> Upsert(int? id)
     {
-        Publisher? Publisher = new();
+        Publisher Publisher = new();
         if (id == null || id == 0)
         {
             return View(Publisher);

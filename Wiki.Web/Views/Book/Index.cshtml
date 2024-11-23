@@ -23,12 +23,13 @@
                         Title
                     </th>
 
-                    @*<th>
+                    <th>
                         Publisher
                     </th>
-                    <th>
+                    @*  <th>
                         Authors
-                    </th>*@
+                    </th> *@
+                    <th>Price</th>
                     <th></th>
                 </tr>
                 @foreach (var item in Model)
@@ -37,30 +38,33 @@
                         <td>
                             @item.Title
                         </td>
-                        @*<td>
-                    @item.Publisher.Name
-                </td>
-                <td>
-                    @{ 
-                        var authors = "";
-                    }
-                    @foreach(var auth in item.BookAuthors)
-                    {
-                        authors += @auth.Author.FullName + ", ";
-                    }
-                    @authors.Trim().TrimEnd(',')
-                </td>*@
                         <td>
-                            <a class="btn btn-primary text-white" asp-action="Upsert" asp-route-Id="@item.Book_Id">
+                            @item?.Publisher?.Name
+                        </td>
+                        <td>
+                            @item?.Price
+                        </td>
+                        <td>
+                            @{
+                                var authors = "";
+                            } 
+                             @foreach (var auth in item.BookAuthorMap)
+                            {
+                                authors += @auth.Author.FullName + ", ";
+                            }
+                            @authors.Trim().TrimEnd(',')
+                        </td>
+                        <td>
+                            <a class="btn btn-primary text-white" asp-action="Upsert" asp-route-Id="@item?.Book_Id">
                                 Edit
                             </a>
-                            <a class="btn btn-info text-white" asp-action="Details" asp-route-Id="@item.Book_Id">
+                            <a class="btn btn-info text-white" asp-action="Details" asp-route-Id="@item?.Book_Id">
                                 Details
                             </a>
-                            <a class="btn btn-danger text-white" asp-action="Delete" asp-route-Id="@item.Book_Id">
+                            <a class="btn btn-danger text-white" asp-action="Delete" asp-route-Id="@item?.Book_Id">
                                 Delete
                             </a>
-                            <a class="btn btn-success text-white" asp-action="ManageAuthors" asp-route-Id="@item.Book_Id">
+                            <a class="btn btn-success text-white" asp-action="ManageAuthors" asp-route-Id="@item?.Book_Id">
                                 Authors
                             </a>
                         </td>
