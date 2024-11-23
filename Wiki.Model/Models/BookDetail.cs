@@ -17,5 +17,5 @@ public class BookDetail
     public string? Weight { get; set; }
     [ForeignKey(nameof(Book))]
     public int Book_Id { get; set; }
-    public Book? Book { get; set; }
+    public virtual Book? Book { get; set; }
 }

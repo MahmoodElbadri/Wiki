@@ -10,7 +10,7 @@ public class SubCategory
 {
     [Key]
     public int SubCategory_Id { get; set; }
-    [Required   ]
+    [Required]
     [MaxLength(50)]
     public string? Name { get; set; }
 }

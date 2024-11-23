@@ -21,5 +21,5 @@ public class FluentAuthor
     [NotMapped]
     public string? FullName => $"{FirstName} {LastName}";
     //public List<FluentBook>? FluentBooks { get; set; }
-     public List<FluentBookAuthorMap>? BookAuthorMap { get; set; }
+     public virtual List<FluentBookAuthorMap>? BookAuthorMap { get; set; }
 }

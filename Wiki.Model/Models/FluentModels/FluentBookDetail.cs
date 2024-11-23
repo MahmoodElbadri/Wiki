@@ -15,6 +15,6 @@ public class FluentBookDetail
     public string? Weight { get; set; }
     //[ForeignKey(nameof(Book))]
     public int Book_Id { get; set; }
-    public FluentBook? Book { get; set; }
+    public virtual FluentBook? Book { get; set; }
 
 }

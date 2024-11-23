@@ -18,13 +18,15 @@ public class BookController : Controller
     }
     public async Task<IActionResult> Index()
     {
-        List<Book> books = await _db.Books.ToListAsync();
-        //foreach (Book book in books)
-        {
-            //book.Publisher = await _db.Publishers.FindAsync(book.Publisher_Id);
-            //await _db.Entry(book).Reference(tmp => tmp.Publisher).LoadAsync();
-            await _db.Books.Include(tmp=>tmp.Publisher).ToListAsync();
-        }
+        //List<Book> books = await _db.Books.ToListAsync();
+        ////foreach (Book book in books)
+        //{
+        //    //book.Publisher = await _db.Publishers.FindAsync(book.Publisher_Id);
+        //    //await _db.Entry(book).Reference(tmp => tmp.Publisher).LoadAsync();
+        //    await _db.Books.Include(tmp=>tmp.Publisher).ToListAsync();
+        //}
+        List<Book> books = await _db.Books.Include(u => u.Publisher)
+                .Include(u => u.BookAuthorMap).ThenInclude(u => u.Author).ToListAsync();
         return View(books);
     }
 
@@ -50,6 +52,30 @@ public class BookController : Controller
             Value = tmp.Author_Id.ToString()
         });
         return View(obj);
+    }
+
+    [HttpPost]
+    public IActionResult ManageAuthors(BookAuthorVM bookAuthorVM)
+    {
+        if (bookAuthorVM.BookAuthor.Book_Id != 0 && bookAuthorVM.BookAuthor.Author_Id != 0)
+        {
+            _db.BookAuthorMaps.Add(bookAuthorVM.BookAuthor);
+            _db.SaveChanges();
+        }
+        return RedirectToAction(nameof(ManageAuthors), new { @id = bookAuthorVM.BookAuthor.Book_Id });
+    }
+
+    [HttpPost]
+    public IActionResult RemoveAuthors(int authorId, BookAuthorVM bookAuthorVM)
+    {
+        int bookId = bookAuthorVM.Book.Book_Id;
+        BookAuthorMap bookAuthorMap = _db.BookAuthorMaps.FirstOrDefault(
+            u => u.Author_Id == authorId && u.Book_Id == bookId);
+
+
+        _db.BookAuthorMaps.Remove(bookAuthorMap);
+        _db.SaveChanges();
+        return RedirectToAction(nameof(ManageAuthors), new { @id = bookId });
     }
 
     public async Task<IActionResult> Upsert(int? id)

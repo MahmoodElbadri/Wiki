@@ -19,9 +19,9 @@ public class Book
     public decimal Price { get; set; }
     [NotMapped]
     public string? PriceRange { get; set; }
-    public BookDetail? BookDetail { get; set; }
+    public virtual BookDetail? BookDetail { get; set; }
     [ForeignKey(nameof(Publisher))]
     public int Publisher_Id { get; set; }
-    public Publisher? Publisher { get; set; }
-    public List<BookAuthorMap>? BookAuthorMap { get; set; }
+    public virtual Publisher? Publisher { get; set; }
+    public virtual List<BookAuthorMap>? BookAuthorMap { get; set; }
 }
