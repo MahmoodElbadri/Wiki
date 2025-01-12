@@ -38,6 +38,7 @@ namespace Wiki.DataAccess.Data
                 Price = 10.99M
             }
             );
+            //Hi There
             var GenreList = new List<Genre>()
             {
                 new Genre() {
